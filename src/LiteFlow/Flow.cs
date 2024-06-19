@@ -12,3 +12,14 @@ internal class Flow<TIn, TOut>(OperationDelegate<TIn, TOut> operationDelegate, I
         return _operationDelegate.Invoke(context);
     }
 }
+
+internal class Flow<TIn>(OperationDelegate<TIn> operationDelegate, IServiceProvider serviceProvider) : IFlow<TIn>
+{
+    private readonly OperationDelegate<TIn> _operationDelegate = operationDelegate ?? throw new ArgumentNullException(nameof(operationDelegate));
+    private readonly IServiceProvider _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+    public ValueTask ExecuteAsync(TIn input, CancellationToken cancellationToken = default)
+    {
+        var context = new OperationContext<TIn>(input, _serviceProvider, cancellationToken);
+        return _operationDelegate.Invoke(context);
+    }
+}
