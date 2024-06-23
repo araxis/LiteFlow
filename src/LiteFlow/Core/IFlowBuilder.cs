@@ -1,15 +1,11 @@
-﻿/* Unmerged change from project 'LiteFlow (net6.0)'
-Before:
-using LiteFlow.Core;
-After:
-using LiteFlow;
-using LiteFlow;
-using LiteFlow.Core;
-*/
-namespace LiteFlow.Core;
+﻿namespace LiteFlow.Core;
 
-public interface IFlowBuilder<TIn, TOut>
+public interface IFlowBuilder<in TIn,TOut>
 {
-    IFlowBuilder<TIn, TOut> UseMiddleware(Func<OperationContext<TIn>, Func<ValueTask<TOut>>, ValueTask<TOut>> middleware);
-    IBuildableFlow<TIn, TOut> Run(OperationDelegate<TIn, TOut> operation);
+    IFlow<TIn, TOut> Build();
+}
+
+public interface IFlowBuilder<in TIn>
+{
+    IFlow<TIn> Build();
 }
