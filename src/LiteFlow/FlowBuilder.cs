@@ -4,35 +4,52 @@ namespace LiteFlow;
 
 public class FlowBuilder<TIn, TOut> : IFlowBuilder<TIn, TOut>
 {
+    private readonly IEnumerable<Func<OperationFunc<TIn, TOut>, OperationFunc<TIn, TOut>>> _middlewares;
+    private OperationFunc<TIn, TOut> _operationDelegate;
     private readonly IServiceProvider _serviceProvider;
-    private readonly ServiceProviderFactory _serviceProviderFactory;
-    private readonly List<Func<OperationDelegate<TIn, TOut>, OperationDelegate<TIn, TOut>>> _middlewares = [];
-    public FlowBuilder(IServiceProvider serviceProvider, ServiceProviderFactory serviceProviderFactory)
+
+    internal FlowBuilder(IEnumerable<Func<OperationFunc<TIn, TOut>, OperationFunc<TIn, TOut>>> middlewares,
+        OperationFunc<TIn, TOut> operationDelegate,
+        IServiceProvider serviceProvider)
     {
+        _middlewares = middlewares ?? throw new ArgumentNullException(nameof(middlewares));
+        _operationDelegate = operationDelegate ?? throw new ArgumentNullException(nameof(operationDelegate));
         _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-        _serviceProviderFactory = serviceProviderFactory ?? throw new ArgumentNullException(nameof(serviceProviderFactory));
     }
 
-    public FlowBuilder(IServiceProvider serviceProvider)
+    public IFlow<TIn, TOut> Build()
     {
+        var middlewares = _middlewares.ToList();
+        for (var m = middlewares.Count - 1; m >= 0; m--)
+        {
+            _operationDelegate = middlewares[m](_operationDelegate);
+        }
+        return new Flow<TIn, TOut>(_operationDelegate, _serviceProvider);
+    }
+}
+
+public class FlowBuilder<TIn>: IFlowBuilder<TIn>
+{
+    private readonly IEnumerable<Func<OperationAction<TIn>, OperationAction<TIn>>> _middlewares;
+    private OperationAction<TIn> _operationDelegate;
+    private readonly IServiceProvider _serviceProvider;
+
+    internal FlowBuilder(IEnumerable<Func<OperationAction<TIn>, OperationAction<TIn>>> middlewares,
+        OperationAction<TIn> operationDelegate,
+        IServiceProvider serviceProvider)
+    {
+        _middlewares = middlewares ?? throw new ArgumentNullException(nameof(middlewares));
+        _operationDelegate = operationDelegate ?? throw new ArgumentNullException(nameof(operationDelegate));
         _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-        _serviceProviderFactory = sp => sp;
     }
 
-    public IFlowBuilder<TIn, TOut> UseMiddleware(Func<OperationContext<TIn>, Func<ValueTask<TOut>>, ValueTask<TOut>> middleware)
+    public IFlow<TIn> Build()
     {
-        ArgumentNullException.ThrowIfNull(middleware);
-        _middlewares.Add(next => context => middleware(context, () => next(context)));
-        return this;
+        var middlewares = _middlewares.ToList();
+        for (var m = middlewares.Count - 1; m >= 0; m--)
+        {
+            _operationDelegate = middlewares[m](_operationDelegate);
+        }
+        return new Flow<TIn>(_operationDelegate, _serviceProvider);
     }
-
-    public IBuildableFlow<TIn, TOut> Run(OperationDelegate<TIn, TOut> operation)
-    {
-
-        ArgumentNullException.ThrowIfNull(operation);
-        var serviceProvider = _serviceProviderFactory.Invoke(_serviceProvider);
-        var builder = new BuildableFlow<TIn, TOut>(_middlewares, operation, serviceProvider);
-        return builder;
-    }
-
 }
