@@ -5,7 +5,9 @@ VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiteFlow", "src\LiteFlow\LiteFlow.csproj", "{6644138C-3F80-4D77-8D6B-EF6EF620B359}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiteFlow.Samples", "LiteFlow.Samples\LiteFlow.Samples.csproj", "{5FFF5104-BED2-4136-A299-C7085651AA7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiteFlow.Samples", "LiteFlow.Samples\LiteFlow.Samples.csproj", "{5FFF5104-BED2-4136-A299-C7085651AA7F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiteFlow.UnitTests", "tests\LiteFlow.UnitTests\LiteFlow.UnitTests.csproj", "{26173DA2-66E2-4D9E-872C-ABF8165DB07A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{5FFF5104-BED2-4136-A299-C7085651AA7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5FFF5104-BED2-4136-A299-C7085651AA7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5FFF5104-BED2-4136-A299-C7085651AA7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26173DA2-66E2-4D9E-872C-ABF8165DB07A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26173DA2-66E2-4D9E-872C-ABF8165DB07A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26173DA2-66E2-4D9E-872C-ABF8165DB07A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26173DA2-66E2-4D9E-872C-ABF8165DB07A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
