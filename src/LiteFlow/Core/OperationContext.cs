@@ -1,19 +1,10 @@
 ﻿namespace LiteFlow.Core;
 
-public class Context<TIn>(TIn request)
-{
-    public TIn Request { get; } = request;
-}
-public class Context<TIn, TOut>(TIn request, TOut result)
-{
-    public TIn Request { get; } = request;
-    public TOut Response { get; } = result;
 
-
-}
-public class OperationContext<TRequest>(TRequest request, IServiceProvider serviceProvider, CancellationToken cancellationToken) : Context<TRequest>(request)
+public class OperationContext<TRequest>(TRequest request, IServiceProvider serviceProvider, CancellationToken cancellationToken)
 {
     public IServiceProvider ServiceProvider { get; } = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+    public TRequest Request { get; } = request;
     public CancellationToken CancellationToken { get; } = cancellationToken;
 
     public OperationContext<TRequest, TResponse> Map<TResponse>(TResponse response) =>

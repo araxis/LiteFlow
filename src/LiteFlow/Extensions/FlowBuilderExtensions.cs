@@ -12,10 +12,10 @@ public static class FlowBuilderExtensions
         return builder.Run(operationBuilder.Build());
     }
 
-    public static FlowBuilder<TIn> Run<TIn>(this IFlowBuilderProvider<TIn> builder, Action<OperationBuilder<TIn>> config)
+    public static IBuildableFlow<TIn> Run<TIn>(this IFlowBuilder<TIn> builder, Action<IBuildableOperation<TIn>> config)
     {
         ArgumentNullException.ThrowIfNull(config);
-        var chain = new OperationBuilder<TIn>();
+        var chain = new BuildableOperation<TIn>();
         config.Invoke(chain);
         return builder.Run(chain.Build());
     }

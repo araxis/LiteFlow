@@ -2,8 +2,8 @@
 
 using LiteFlow;
 using LiteFlow.Core;
-using Microsoft.Extensions.DependencyInjection;
 using LiteFlow.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 
 Console.WriteLine("Hello, World!");
 var services = new ServiceCollection();
@@ -11,8 +11,8 @@ services.AddSingleton<Handler1>();
 services.AddSingleton<Handler2>();
 services.AddSingleton<Handler3>();
 var sp = services.BuildServiceProvider();
-var builder = new FlowBuilderProvider<Request, Response1>(sp)
-    .Use(async (context, next) =>
+var builder = new FlowBuilder<Request, Response1>(sp)
+    .UseMiddleware(async (context, next) =>
     {
         Console.WriteLine(" before s1");
         var result = await next.Invoke();
@@ -20,7 +20,7 @@ var builder = new FlowBuilderProvider<Request, Response1>(sp)
         return result;
 
     })
-    .Use(async (context, next) =>
+    .UseMiddleware(async (context, next) =>
     {
         Console.WriteLine("  before s2");
         var result = await next.Invoke();
@@ -49,7 +49,7 @@ Response1 Do(Response1 r)
 
 public class Handler1 : IAction<Request>
 {
-    public ValueTask HandleAsync(Request input, CancellationToken cancellationToken)
+    public ValueTask ExecuteAsync(Request input, CancellationToken cancellationToken)
     {
         Console.WriteLine("Handler1");
         return ValueTask.CompletedTask;
