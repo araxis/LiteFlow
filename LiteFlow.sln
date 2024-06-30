@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiteFlow", "src\LiteFlow\Li
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiteFlow.Samples", "LiteFlow.Samples\LiteFlow.Samples.csproj", "{5FFF5104-BED2-4136-A299-C7085651AA7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiteFlow.UnitTests", "tests\LiteFlow.UnitTests\LiteFlow.UnitTests.csproj", "{26173DA2-66E2-4D9E-872C-ABF8165DB07A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiteFlow.UnitTests", "tests\LiteFlow.UnitTests\LiteFlow.UnitTests.csproj", "{26173DA2-66E2-4D9E-872C-ABF8165DB07A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
